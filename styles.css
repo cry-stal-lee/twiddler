@@ -8,7 +8,9 @@ html, body, #app {
 /* Continue building out the CSS styling for your Twiddler app below! We got you started by
 providing a space for you to apply styles to your app's outermost HTML element - the #app itself. */
 
-#app {
-  background-color: green;
-  color: yellow;
+.icon:hover {
+  color: blue;
 }
+
+/* Font rule for reference
+font-family: 'Roboto', sans-serif; */
