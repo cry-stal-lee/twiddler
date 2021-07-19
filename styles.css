@@ -11,11 +11,19 @@ providing a space for you to apply styles to your app's outermost HTML element -
 /* Font rule for reference
 font-family: 'Roboto', sans-serif; */
 
+body {
+  background: linear-gradient(180deg, #536872, #232c38, #6e6b8a);
+  background-size: 600% 600%;
+
+  -webkit-animation: gradiate 43s ease infinite;
+  -moz-animation: gradiate 43s ease infinite;
+  animation: gradiate 43s ease infinite;
+}
+
 #app {
   display: grid;
   grid-template-columns: 2fr 3fr 2fr;
-  background-color: white;
-  color: black;
+  font-family: 'Raleway', sans-serif;
 }
 
 .profile-photo {
@@ -32,19 +40,27 @@ button {
   height: 50px;
 }
 
+a:hover {
+  animation: quickBlur 0.25s ease;
+}
+
 header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #a9c0cf;
   grid-row: 1;
   grid-column: 2;
-
-  font-family: 'Roboto', sans-serif;
-  font-style: normal;
-  font-weight: 500;
   margin: 10px;
   padding: 5px;
   text-align: center;
-  width: 200px;
-  border-style: dotted;
-  height: 50px;
+
+  filter: brightness(10%);
+  animation: blurAnimation 10s ease infinite alternate;
+}
+
+#credit {
+  color: c1c2e3;
 }
 
 #new-tweet-form {
@@ -69,9 +85,9 @@ header {
 }
 
 #credit {
+  display: flex;
   grid-column: 3;
   grid-row: 1;
-  justify-items: end;
 }
 
 .scrollToTop {
@@ -107,10 +123,61 @@ svg {
   height: 12px;
 }
 
-/* &:hover {
+&:hover {
   background-color: #E8E8E8;
 
-     svg {
-      fill: #000000;
-     }
- } */
+  svg {
+    fill: #000000;
+  }
+}
+
+textarea {
+  display: block;
+  border: 1px solid darkgrey;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes blurAnimation {
+  /* Animation happens between 0% and 20% */
+  0% {
+    filter: blur(0);
+  }
+  10% {
+    filter: blur(5px);
+  }
+  /* Animation is paused/delayed between 20% and 100% */
+  20%, 100% {
+    filter: blur(0);
+  }
+}
+
+@keyframes quickBlur {
+  0% {
+    filter: blur(0);
+  }
+  80% {
+    filter: blur(3px);
+  }
+  100% {
+    filter: blur(0);
+  }
+}
+
+
+@-webkit-keyframes gradiate {
+  0%{background-position:50% 0%}
+  50%{background-position:51% 100%}
+  100%{background-position:50% 0%}
+}
+@-moz-keyframes gradiate {
+  0%{background-position:50% 0%}
+  50%{background-position:51% 100%}
+  100%{background-position:50% 0%}
+}
+@keyframes gradiate {
+  0%{background-position:50% 0%}
+  50%{background-position:51% 100%}
+  100%{background-position:50% 0%}
+}

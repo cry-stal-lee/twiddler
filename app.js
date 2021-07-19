@@ -3,26 +3,37 @@ $(document).ready(function(){
 
   // Create new HTML elements
   var $app = $('#app');
-  var $title = $('<header><h1>Twiddler</h1></header>');
+  var $title = $('<header><h1>twiddler</h1></header>');
 
   var $friendsList = $('<ul id="friends-list">Friends List</ul>');
 
   var $newTweetForm = $('<form id="new-tweet-form"></form>');
-  $newTweetForm.append('<label for="username">Hello @</label><input type="text" id="username" name="username"></input><br>');
-  $newTweetForm.append('<label for="message">what\'s on your mind?<br></label><input type="text" id="message" name="message"></input><br>');
-  var $tweedIt = $('<input type="submit" value="Tweed it!" id="tweedIt"></input>');
+  $newTweetForm.append('<label for="username">Hello @</label><input type="text" id="username" name="username" minlength="0" maxlength="20"></input><br>');
+  $newTweetForm.append('<label for="message">what\'s on your mind?<br></label>')
+
+  $newTweetForm.append('<textarea name="message" id="message" cols="30" rows="10" minlength="0" maxlength="150"></textarea>');
+  $newTweetForm.append('<span id="remainingChars">150</span> characters remaining');
+
+  var $tweedIt = $('<input type="submit" value="Tweed it!" id="tweedIt" disabled="true"></input>');
   $newTweetForm.append($tweedIt);
 
   var $newTweeds = $('<span id="new-tweeds"></span>').text('0 new tweeds');
-
   var $updateFeed = $('<button id="update-feed">Update Feed</button>');
-
   var $feed = $('<div id="feed"></div>');
-
-  var $credit = $('<a id="credit" href="https://github.com/cry-stal-lee">crystal lee</a>');
+  var $credit = $('<a id="credit" href="https://github.com/cry-stal-lee"><h2>crystal lee</h2></a>');
 
   var $scrollToTop = $('<a class="scrollToTop hide" href=""></a>');
   $scrollToTop.html('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6"><path d="M12 6H0l6-6z"/></svg>');
+
+  // Append new HTML elements to the DOM
+  $title.appendTo($app);
+  $newTweetForm.appendTo($app);
+  $newTweeds.appendTo($app);
+  $updateFeed.appendTo($app);
+  $feed.appendTo($app);
+  $friendsList.appendTo($app);
+  $credit.appendTo($app);
+  $scrollToTop.appendTo($app);
 
   // Create event handler functions
   var renderFeed = function(user) {
@@ -42,7 +53,13 @@ $(document).ready(function(){
       index -= 1;
     }
     renderFriendsList();
+    resetInput();
   };
+
+  var resetInput = function() {
+    $('#username, #message').val('');
+    $('#remainingChars').text($('#message').attr('maxlength'));
+  }
 
   var renderFriendsList = function() {
     $friendsList.html('');
@@ -85,10 +102,7 @@ $(document).ready(function(){
   };
 
   var scrollFunc = function() {
-    // Get the current scroll value
     var y = window.scrollY;
-
-    // If the scroll value is greater than the window height, let's add a class to the scroll-to-top button to show it!
     if (y > 0) {
       $scrollToTop.removeClass('hide').addClass('show');
     } else {
@@ -121,7 +135,8 @@ $(document).ready(function(){
     renderFeed();
   });
 
-  $tweedIt.on("click", function() {
+  $tweedIt.on("click", function(event) {
+    event.preventDefault();
     var tweet = {};
     tweet.user = $('#username').val();
     tweet.message = $('#message').val();
@@ -129,7 +144,6 @@ $(document).ready(function(){
     tweet.created_at = new Date();
     addTweet(tweet);
     renderFeed();
-    return false;
   });
 
   window.addEventListener("scroll", scrollFunc);
@@ -139,15 +153,18 @@ $(document).ready(function(){
     scrollToTop();
   });
 
-  // Append new HTML elements to the DOM
-  $title.appendTo($app);
-  $newTweetForm.appendTo($app);
-  $newTweeds.appendTo($app);
-  $updateFeed.appendTo($app);
-  $feed.appendTo($app);
-  $friendsList.appendTo($app);
-  $credit.appendTo($app);
-  $scrollToTop.appendTo($app);
+  $('#username, #message').on("keyup", function() {
+    var length = $('#message').val().length;
+    var nameLength = $('#username').val().length;
+    var maxLength = $('#message').attr("maxlength");
+    var remaining = maxLength-length;
+    $('#remainingChars').text(remaining);
+    if (length !== 0 && nameLength !== 0) {
+      $('#tweedIt').prop('disabled', false);
+    } else {
+      $('#tweedIt').prop('disabled', true);
+    };
+  });
 
   // Render initial feed, friends list, and new tweeds
   renderFeed();
@@ -155,3 +172,11 @@ $(document).ready(function(){
 
 window.isItBeautifulYet = true;
 
+
+/* EXTERNAL RESOURCES USED
+
+Scroll back to top button: https://getflywheel.com/layout/sticky-back-to-top-button-tutorial/
+JQuery textarea with character counter: http://geoffmuskett.com/really-simple-jquery-character-countdown-in-textarea/
+CSS background gradient animator: https://www.gradient-animator.com/
+
+*/
