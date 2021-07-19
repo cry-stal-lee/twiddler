@@ -19,6 +19,11 @@ $(document).ready(function(){
 
   var $feed = $('<div id="feed"></div>');
 
+  var $credit = $('<a id="credit" href="https://github.com/cry-stal-lee">crystal lee</a>');
+
+  var $scrollToTop = $('<a class="scrollToTop hide" href=""></a>');
+  $scrollToTop.html('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6"><path d="M12 6H0l6-6z"/></svg>');
+
   // Create event handler functions
   var renderFeed = function(user) {
     $feed.html('');
@@ -74,7 +79,47 @@ $(document).ready(function(){
     return $tweet;
   };
 
+  var refreshNewTweeds = function() {
+    $newTweeds.text(newTweeds + ' new tweeds');
+    setTimeout(refreshNewTweeds, 1000);
+  };
+
+  var scrollFunc = function() {
+    // Get the current scroll value
+    var y = window.scrollY;
+
+    // If the scroll value is greater than the window height, let's add a class to the scroll-to-top button to show it!
+    if (y > 0) {
+      $scrollToTop.removeClass('hide').addClass('show');
+    } else {
+      $scrollToTop.removeClass('show').addClass('hide');
+    }
+  };
+
+  const scrollToTop = () => {
+    // Let's set a variable for the number of pixels we are from the top of the document.
+    const c = document.documentElement.scrollTop || document.body.scrollTop;
+
+    // If that number is greater than 0, we'll scroll back to 0, or the top of the document.
+    // We'll also animate that scroll with requestAnimationFrame:
+    // https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
+    if (c > 0) {
+      window.requestAnimationFrame(scrollToTop);
+      // ScrollTo takes an x and a y coordinate.
+      // Increase the '10' value to get a smoother/slower scroll!
+      window.scrollTo(0, c - c / 10);
+    }
+  };
+
   // Set event listeners (providing appropriate handlers as input)
+  $title.on("click", function() {
+    if ($updateFeed.hasClass('back')) {
+      $updateFeed.removeClass('back');
+      $updateFeed.text('Update Feed');
+    }
+    renderFeed();
+  });
+
   $updateFeed.on("click", function() {
     if ($updateFeed.hasClass('back')) {
       $updateFeed.removeClass('back');
@@ -94,10 +139,13 @@ $(document).ready(function(){
     return false;
   });
 
-  var refreshNewTweeds = function() {
-    $newTweeds.text(newTweeds + ' new tweeds');
-    setTimeout(refreshNewTweeds, 1000);
-  };
+  window.addEventListener("scroll", scrollFunc);
+
+  // When the button is clicked, run our ScrolltoTop function above!
+  $scrollToTop.onclick = function(e) {
+    e.preventDefault();
+    scrollToTop();
+  }
 
   // Append new HTML elements to the DOM
   $title.appendTo($app);
@@ -106,6 +154,8 @@ $(document).ready(function(){
   $updateFeed.appendTo($app);
   $feed.appendTo($app);
   $friendsList.appendTo($app);
+  $credit.appendTo($app);
+  $scrollToTop.appendTo($app);
 
   // Render initial feed, friends list, and new tweeds
   renderFeed();

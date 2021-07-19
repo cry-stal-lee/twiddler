@@ -67,3 +67,50 @@ header {
   grid-column: 1;
   grid-row: 1;
 }
+
+#credit {
+  grid-column: 3;
+  grid-row: 1;
+  justify-items: end;
+}
+
+.scrollToTop {
+  transition: all .25s ease-in-out;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  margin: 0 3em 3em 0;
+  border-radius: 50%;
+  padding: .25em;
+  width: 80px;
+  height: 80px;
+  background-color: #F8F8F8;
+}
+
+.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.hide {
+  visibility: hidden;
+  opacity: 0;
+}
+
+svg {
+  fill: #000;
+  width: 24px;
+  height: 12px;
+}
+
+/* &:hover {
+  background-color: #E8E8E8;
+
+     svg {
+      fill: #000000;
+     }
+ } */
