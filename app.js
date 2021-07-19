@@ -3,13 +3,27 @@ $(document).ready(function(){
 
   // Create new HTML elements
   var $app = $('#app');
-  var $title = $('<h1>Twiddler</h1>');
+  var $title = $('<header><h1>Twiddler</h1></header>');
+
+  var $friendsList = $('<ul id="friends-list">Friends List</ul>');
+
+  var $newTweetForm = $('<form id="new-tweet-form"></form>');
+  $newTweetForm.append('<label for="username">Hello @</label><input type="text" id="username" name="username"></input><br>');
+  $newTweetForm.append('<label for="message">what\'s on your mind?<br></label><input type="text" id="message" name="message"></input><br>');
+  var $tweedIt = $('<input type="submit" value="Tweed it!" id="tweedIt"></input>');
+  $newTweetForm.append($tweedIt);
+
+  var $newTweeds = $('<span id="new-tweeds"></span>').text('0 new tweeds');
+
   var $updateFeed = $('<button id="update-feed">Update Feed</button>');
+
   var $feed = $('<div id="feed"></div>');
 
   // Create event handler functions
   var renderFeed = function(user) {
     $feed.html('');
+    newTweeds = 0;
+    refreshNewTweeds();
     if (user) {
       var streamSource = streams.users[user];
     } else {
@@ -22,15 +36,25 @@ $(document).ready(function(){
       $tweet.appendTo($feed);
       index -= 1;
     }
+    renderFriendsList();
+  };
+
+  var renderFriendsList = function() {
+    $friendsList.html('');
+    let sortedUsers = Object.keys(streams.users).sort();
+    sortedUsers.forEach(function(user) {
+      var $friend = $('<li class="friend"></li>').text('@' + user).on("click", function() {
+        handleUsernameClick(user);
+      });
+      $friend.appendTo($friendsList);
+    })
   };
 
   var handleUsernameClick = function(user) {
-    // toggles update to back if currently "update feed"
     if (!$updateFeed.hasClass('back')) {
       $updateFeed.text('Back');
       $updateFeed.addClass('back');
     }
-    // re-renders feed with only clicked user's tweets
     renderFeed(user);
   }
 
@@ -59,11 +83,33 @@ $(document).ready(function(){
     renderFeed();
   });
 
+  $tweedIt.on("click", function() {
+    var tweet = {};
+    tweet.user = $('#username').val();
+    tweet.message = $('#message').val();
+    tweet.profilePhotoURL = './assets/img/default.png';
+    tweet.created_at = new Date();
+    addTweet(tweet);
+    renderFeed();
+    return false;
+  });
+
+  var refreshNewTweeds = function() {
+    $newTweeds.text(newTweeds + ' new tweeds');
+    setTimeout(refreshNewTweeds, 1000);
+  };
+
   // Append new HTML elements to the DOM
   $title.appendTo($app);
+  $newTweetForm.appendTo($app);
+  $newTweeds.appendTo($app);
   $updateFeed.appendTo($app);
   $feed.appendTo($app);
+  $friendsList.appendTo($app);
 
-  // Render initial feed
+  // Render initial feed, friends list, and new tweeds
   renderFeed();
 });
+
+window.isItBeautifulYet = true;
+

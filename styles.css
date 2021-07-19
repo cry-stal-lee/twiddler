@@ -8,9 +8,62 @@ html, body, #app {
 /* Continue building out the CSS styling for your Twiddler app below! We got you started by
 providing a space for you to apply styles to your app's outermost HTML element - the #app itself. */
 
-.icon:hover {
-  color: blue;
-}
-
 /* Font rule for reference
 font-family: 'Roboto', sans-serif; */
+
+#app {
+  display: grid;
+  grid-template-columns: 2fr 3fr 2fr;
+  background-color: white;
+  color: black;
+}
+
+.profile-photo {
+  border-radius: 50%;
+  max-height: 80px;
+  max-width: 80px;
+}
+
+.icon:hover {
+  color: cyan;
+}
+
+button {
+  height: 50px;
+}
+
+header {
+  grid-row: 1;
+  grid-column: 2;
+
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  margin: 10px;
+  padding: 5px;
+  text-align: center;
+  width: 200px;
+  border-style: dotted;
+  height: 50px;
+}
+
+#new-tweet-form {
+  grid-column: 2;
+}
+
+#new-tweeds {
+  grid-column: 2;
+}
+
+#update-feed {
+  grid-column: 2;
+}
+
+#feed {
+  grid-column: 2;
+}
+
+#friends-list {
+  grid-column: 1;
+  grid-row: 1;
+}

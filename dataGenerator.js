@@ -11,13 +11,19 @@ streams.users.shawndrost = [];
 streams.users.sharksforcheap = [];
 streams.users.mracus = [];
 streams.users.douglascalhoun = [];
+streams.users.hectorpina = [];
 window.users = Object.keys(streams.users);
+var newTweeds = 0;
 
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet) {
   var username = newTweet.user;
+  if (!streams.users[username]) {
+    streams.users[username] = [];
+  }
   streams.users[username].push(newTweet);
   streams.home.push(newTweet);
+  newTweeds += 1;
 };
 
 // utility function
