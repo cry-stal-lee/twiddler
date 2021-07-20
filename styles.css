@@ -8,87 +8,204 @@ html, body, #app {
 /* Continue building out the CSS styling for your Twiddler app below! We got you started by
 providing a space for you to apply styles to your app's outermost HTML element - the #app itself. */
 
-/* Font rule for reference
-font-family: 'Roboto', sans-serif; */
-
 body {
-  background: linear-gradient(180deg, #536872, #232c38, #6e6b8a);
+  background: linear-gradient(177deg, #3f525e, #1c2733, #324453, #2b3549);
   background-size: 600% 600%;
+  background-attachment: fixed;
 
-  -webkit-animation: gradiate 43s ease infinite;
-  -moz-animation: gradiate 43s ease infinite;
-  animation: gradiate 43s ease infinite;
+  -webkit-animation: gradiate 60s ease infinite;
+  -moz-animation: gradiate 60s ease infinite;
+  animation: gradiate 60s ease infinite;
+
+  /* Prevents rubberbanding behavior upon overscrolling */
+  overscroll-behavior-y: none;
+
+  color: #a9c0cf;
 }
 
 #app {
   display: grid;
   grid-template-columns: 2fr 3fr 2fr;
-  font-family: 'Raleway', sans-serif;
+  grid-template-rows: auto auto auto auto auto 1fr;
+  /* font-family: 'Raleway', sans-serif; */
+  font-family: 'Courier', serif;
 }
 
 .profile-photo {
   border-radius: 50%;
-  max-height: 80px;
-  max-width: 80px;
+
+  border: #a9c0cf solid 1px;
+
+  height: 80px;
+  width: 80px;
+  display: flex;
+  grid-column: 1;
+  grid-row: 1 / 3;
+  justify-self: center;
 }
 
-.icon:hover {
-  color: cyan;
+.tweet-content {
+  grid-column: 2;
+  grid-row: 1;
 }
 
 button {
   height: 50px;
 }
 
-a:hover {
-  animation: quickBlur 0.25s ease;
-}
-
 header {
+  margin: 2em;
+  padding: .25em;
+
   display: flex;
   justify-content: center;
-  align-items: center;
   color: #a9c0cf;
   grid-row: 1;
   grid-column: 2;
-  margin: 10px;
-  padding: 5px;
   text-align: center;
 
   filter: brightness(10%);
   animation: blurAnimation 10s ease infinite alternate;
+  max-height: 100%;
 }
 
-#credit {
-  color: c1c2e3;
+h1, h2 {
+  font-weight: bold;
 }
 
-#new-tweet-form {
+h1:hover {
+  animation: quickBlur 0.25s ease;
+  cursor: pointer;
+}
+
+#credit-wrapper {
+  display: flex;
+  grid-column: 3;
+  grid-row: 1;
+
+  margin: 2.5em 3em;
+  padding: .25em;
+  justify-content: flex-end;
+}
+
+#credit, #credit:visited, #credit:hover, #credit:active {
+  text-decoration: none;
+  color: #7c8ab9;
+}
+
+a:hover {
+  animation: quickBlur 0.25s ease;
+}
+
+.icon:hover {
+  color: #303761;
+  transition: 0.2s;
+}
+
+#new-tweed-form-container {
   grid-column: 2;
+  display: flex;
+  width: 100%;
+}
+
+#new-tweed-form {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#tweed-it-container {
+  grid-column: 2;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 2px 0;
+}
+
+#new-tweeds-container {
+  grid-column: 2;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
 }
 
 #new-tweeds {
-  grid-column: 2;
-}
-
-#update-feed {
-  grid-column: 2;
+  color: #72858f;
 }
 
 #feed {
   grid-column: 2;
 }
 
-#friends-list {
-  grid-column: 1;
-  grid-row: 1;
+.friends-list {
+  text-align: left;
+  transition: all .3s ease;
+  background-color: #7c8ab9;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
+  border: 0px;
+  border-radius: 10px;
+  padding: 60px 0 20px 0;
+  max-height: 80vh;
+  overflow-y: scroll;
+  overflow-x: scroll;
 }
 
-#credit {
-  display: flex;
-  grid-column: 3;
-  grid-row: 1;
+.menu-button {
+  top: 3.5em;
+  left: 3.25em;
+  width: 100 px;
+  position: fixed;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 100;
 }
+
+.menu-button:hover {
+  animation: quickBlur 0.25s ease;
+  color: #303761;
+}
+
+.line {
+  background: #a9b3c9;
+  pointer-events: none;
+  height: 2px;
+  width: 30px;
+  display: block;
+  margin-bottom: 7px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.change .line-left {
+  -webkit-transform: rotate(-45deg) translate(-6px, 6px);
+  transform: rotate(-45deg) translate(-6px, 6px);
+}
+
+.change .line-middle {opacity: 0;}
+
+.change .line-right {
+  -webkit-transform: rotate(45deg) translate(-6px, -6px);
+  transform: rotate(45deg) translate(-6px, -6px);
+}
+
+/*
+.change {
+  color: pink;
+} */
+
+/* .line-left, .line-right {
+  width: 16.5px;
+  transition: all .2s linear;
+}
+
+.line-right {
+  float: right;
+} */
 
 .scrollToTop {
   transition: all .25s ease-in-out;
@@ -104,7 +221,7 @@ header {
   padding: .25em;
   width: 80px;
   height: 80px;
-  background-color: #F8F8F8;
+  background-color: #a9c0cf;
 }
 
 .show {
@@ -118,25 +235,151 @@ header {
 }
 
 svg {
-  fill: #000;
+  fill: #7c8ab9;
   width: 24px;
   height: 12px;
 }
 
-&:hover {
-  background-color: #E8E8E8;
+.scrollToTop:hover {
+  background-color: #303761;
+}
 
-  svg {
-    fill: #000000;
-  }
+#username {
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  background: rgba(34,46,62,.4);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
+  border: 2px solid #a9b3c9;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 5px 10px;
+  margin: 5px;
+  max-height: 2rem;
+  max-width: 150px;
+}
+
+.user-time {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.timestamp {
+  display: inline;
+  color: #72858f;
+}
+
+::placeholder {
+  color: #72858f;
+}
+
+.message {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.icon-container {
+  display: flex;
+  grid-column: 2;
+  grid-row: 3;
+  justify-content: space-between;
 }
 
 textarea {
-  display: block;
-  border: 1px solid darkgrey;
+  font-family: inherit;
+  color: inherit;
+  resize: none;
+  box-sizing: border-box;
+  width: 100%;
+  background: rgba(34,46,62,.4);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
+  border: 2px solid #a9b3c9;
+  border-radius: 10px;
+  font-size: inherit;
+  padding: 10px;
+  overflow-y: hidden;
+}
+
+textarea:focus, input:focus{
+  outline: none;
+}
+
+#remaining, #tweed-it {
+  font-family: inherit;
+  color: inherit;
+  font-size: 0.75rem;
+}
+
+#remaining {
+  font-style: italic;
+  color: #72858f;
+}
+
+#update-feed {
+  font-size: 1rem;
+  font-family: inherit;
+  color: inherit;
+  max-width: 200px;
+  background-color: #a9c0cf;
+  color: #5b6b9e;
+  border: 2px solid #7c8ab9;
   border-radius: 5px;
-  padding: 5px;
-  background-color: rgba(255, 255, 255, 0.05);
+  max-height: 2.5rem;
+  padding: 0 30px;
+}
+
+#tweed-it {
+  background-color: #a9c0cf;
+  color: #5b6b9e;
+  border: 2px solid #7c8ab9;
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 30px;
+}
+
+#tweed-it:disabled, #update-feed:disabled {
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+#tweed-it:hover, #update-feed:hover {
+  background-color: #303761;
+  color: #7c8ab9;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.tweet {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: auto 1fr auto;
+  font-family: inherit;
+  gap: 10px;
+  color: inherit;
+  resize: none;
+  box-sizing: border-box;
+  width: 100%;
+  background: rgba(34,46,62,.4);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
+  border: 2px solid #a9b3c9;
+  border-radius: 10px;
+  font-size: inherit;
+  min-height: 80px;
+  overflow-y: hidden;
+  padding: 20px 10px;
+  margin: 20px 0;
+}
+
+.tweet:hover {
+  /* background: rgba(74, 104, 143, 0.4); */
+  background: rgba(153, 151, 119, 0.1);
+  transition: 0.3s;
 }
 
 @keyframes blurAnimation {
@@ -158,13 +401,12 @@ textarea {
     filter: blur(0);
   }
   80% {
-    filter: blur(3px);
+    filter: blur(2px);
   }
   100% {
     filter: blur(0);
   }
 }
-
 
 @-webkit-keyframes gradiate {
   0%{background-position:50% 0%}
@@ -180,4 +422,42 @@ textarea {
   0%{background-position:50% 0%}
   50%{background-position:51% 100%}
   100%{background-position:50% 0%}
+}
+
+.username {
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.username:hover {
+  cursor: pointer;
+  color: #303761;
+}
+
+p {
+  margin: 0;
+}
+
+li {
+  font-size: 1.25rem;
+  color: #303761;
+  list-style-type: none;
+  padding: 10px 80px 10px 20px;
+  background: linear-gradient(to left, #7c8ab9  50%, white 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: .5s ease-out;
+}
+
+.friend:hover {
+  animation: quickBlur 0.25s ease;
+  color: #7c8ab9;
+  background-position: left bottom;
+}
+
+.menu {
+  position: fixed;
+  top: 1.5em;
+  left: 2em;
+  display: none;
 }

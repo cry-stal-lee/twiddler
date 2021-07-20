@@ -5,34 +5,46 @@ $(document).ready(function(){
   var $app = $('#app');
   var $title = $('<header><h1>twiddler</h1></header>');
 
-  var $friendsList = $('<ul id="friends-list">Friends List</ul>');
+  var $newTweedFormContainer = $('<div id="new-tweed-form-container"></div>');
+  var $newTweedForm = $('<form id="new-tweed-form"></form>');
+  $newTweedForm.append('<label for="username">Hello <strong>@</strong></label><input type="text" id="username" name="username" placeholder="[your handle]" maxlength="25"></input>, ');
+  $newTweedForm.append('<label for="message">what\'s on your mind?</label>')
+  $newTweedForm.append('<textarea name="message" id="message" maxlength="300" placeholder="[your thoughts here]"></textarea>');
+  $newTweedFormContainer.append($newTweedForm);
 
-  var $newTweetForm = $('<form id="new-tweet-form"></form>');
-  $newTweetForm.append('<label for="username">Hello @</label><input type="text" id="username" name="username" minlength="0" maxlength="20"></input><br>');
-  $newTweetForm.append('<label for="message">what\'s on your mind?<br></label>')
+  var $tweedItContainer = $('<div id="tweed-it-container"></div>')
+  var $tweedIt = $('<input type="submit" form="new-tweed-form" value="tweed it &#8594" id="tweed-it" disabled="true"></input>');
+  $tweedItContainer.append($tweedIt, '<span id="remaining"><span id="remainingChars">300</span> chars remaining</span>');
 
-  $newTweetForm.append('<textarea name="message" id="message" cols="30" rows="10" minlength="0" maxlength="150"></textarea>');
-  $newTweetForm.append('<span id="remainingChars">150</span> characters remaining');
-
-  var $tweedIt = $('<input type="submit" value="Tweed it!" id="tweedIt" disabled="true"></input>');
-  $newTweetForm.append($tweedIt);
-
+  var $newTweedsContainer = $('<div id="new-tweeds-container"></div>');
   var $newTweeds = $('<span id="new-tweeds"></span>').text('0 new tweeds');
-  var $updateFeed = $('<button id="update-feed">Update Feed</button>');
+  var $updateFeed = $('<button id="update-feed">&#8635 update feed</button>');
+  $newTweedsContainer.append($newTweeds, $updateFeed);
+
   var $feed = $('<div id="feed"></div>');
+
+  var $creditWrapper = $('<div id="credit-wrapper"></div>')
   var $credit = $('<a id="credit" href="https://github.com/cry-stal-lee"><h2>crystal lee</h2></a>');
 
   var $scrollToTop = $('<a class="scrollToTop hide" href=""></a>');
   $scrollToTop.html('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6"><path d="M12 6H0l6-6z"/></svg>');
 
+  var $menu = $('<div class="menu"></div>');
+  var $friendsList = $('<ul class="friends-list">Friends List</ul>');
+  var $menuButton = $('<button class="menu-button"></button>');
+  $menuButton.append('<span class="line line-left"></span><span class="line line-middle"></span><span class="line line-right"></span>');
+  $menu.append($friendsList);
+
   // Append new HTML elements to the DOM
   $title.appendTo($app);
-  $newTweetForm.appendTo($app);
-  $newTweeds.appendTo($app);
-  $updateFeed.appendTo($app);
+  $newTweedFormContainer.appendTo($app);
+  $tweedItContainer.appendTo($app);
+  $newTweedsContainer.appendTo($app);
   $feed.appendTo($app);
-  $friendsList.appendTo($app);
-  $credit.appendTo($app);
+  $menuButton.appendTo($app);
+  $menu.appendTo($app);
+  $credit.appendTo($creditWrapper)
+  $creditWrapper.appendTo($app);
   $scrollToTop.appendTo($app);
 
   // Create event handler functions
@@ -48,17 +60,23 @@ $(document).ready(function(){
     var index = streamSource.length - 1;
     while(index >= 0){
       var tweet = streamSource[index];
-      var $tweet = renderTweet(tweet);
+      var $tweet = renderTweet(tweet).hide();
       $tweet.appendTo($feed);
+      $tweet.css('opacity', 0).slideDown('slow').animate(
+        { opacity: 1 },
+        { queue: false, duration: 'slow' }
+      );
       index -= 1;
     }
     renderFriendsList();
-    resetInput();
+    resetMessage();
   };
 
-  var resetInput = function() {
-    $('#username, #message').val('');
+  var resetMessage = function() {
+    $('#message').val('');
     $('#remainingChars').text($('#message').attr('maxlength'));
+    $('#tweed-it').prop('disabled', true);
+    $('#message').css("height", "58px");
   }
 
   var renderFriendsList = function() {
@@ -74,7 +92,7 @@ $(document).ready(function(){
 
   var handleUsernameClick = function(user) {
     if (!$updateFeed.hasClass('back')) {
-      $updateFeed.text('Back');
+      $updateFeed.html('&#8592; back');
       $updateFeed.addClass('back');
     }
     renderFeed(user);
@@ -86,18 +104,25 @@ $(document).ready(function(){
     var $user = $('<span class="username"></span>').text('@' + tweet.user).on("click", function() {
       handleUsernameClick(tweet.user)});
     var $message = $('<p class="message"></p>').text(tweet.message);
-    var $timestamp = $('<span class="timestamp"></span>').text(jQuery.timeago(tweet.created_at));
+    var $timestamp = $('<span class="timestamp"></span>').html(' &bull; ' + jQuery.timeago(tweet.created_at));
+
+    var $userTime = $('<span class="user-time"></span>');
+    $userTime.append($user, $timestamp);
+
+    var $iconContainer = $('<div class="icon-container"></div>')
     var $comment = $('<i class="fas fa-comment icon comment"></i>');
     var $retweet = $('<i class="fas fa-retweet icon retweet"></i>');
     var $like = $('<i class ="fas fa-heart icon like"></i>');
     var $share = $('<i class="fas fa-share icon share"></i>');
-    $tweet.append($profilePhoto, '<br>', $user, $message, $timestamp,
-        '<br>', $comment, $retweet, $like, $share);
+    var $hiddenIcon = $('<i class="fas fa-share icon share hide"></i>');
+    $iconContainer.append($comment, $retweet, $like, $share, $hiddenIcon);
+
+    $tweet.append($profilePhoto, $userTime, $message, $iconContainer);
     return $tweet;
   };
 
   var refreshNewTweeds = function() {
-    $newTweeds.text(newTweeds + ' new tweeds');
+    $newTweeds.text('[ ' + newTweeds + ' new tweeds ]');
     setTimeout(refreshNewTweeds, 1000);
   };
 
@@ -122,7 +147,7 @@ $(document).ready(function(){
   $title.on("click", function() {
     if ($updateFeed.hasClass('back')) {
       $updateFeed.removeClass('back');
-      $updateFeed.text('Update Feed');
+      $updateFeed.html('&#8635 update feed');
     }
     renderFeed();
   });
@@ -130,7 +155,7 @@ $(document).ready(function(){
   $updateFeed.on("click", function() {
     if ($updateFeed.hasClass('back')) {
       $updateFeed.removeClass('back');
-      $updateFeed.text('Update Feed');
+      $updateFeed.html('&#8635 update feed');
     }
     renderFeed();
   });
@@ -153,17 +178,30 @@ $(document).ready(function(){
     scrollToTop();
   });
 
-  $('#username, #message').on("keyup", function() {
+  $('#username, #message').on("keyup", function(event) {
     var length = $('#message').val().length;
     var nameLength = $('#username').val().length;
     var maxLength = $('#message').attr("maxlength");
     var remaining = maxLength-length;
     $('#remainingChars').text(remaining);
     if (length !== 0 && nameLength !== 0) {
-      $('#tweedIt').prop('disabled', false);
+      $('#tweed-it').prop('disabled', false);
     } else {
-      $('#tweedIt').prop('disabled', true);
+      $('#tweed-it').prop('disabled', true);
     };
+  });
+
+  $('.menu-button').on("click", function(x) {
+    $(this).toggleClass("change");
+    $('.menu').slideToggle("slow");
+  });
+
+  // Autoexpand and shrink text area
+  $("textarea").each(function () {
+    this.setAttribute("style", "height:" + (this.scrollHeight) + "px; overflow-y:hidden;");
+  }).on("input", function () {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
   });
 
   // Render initial feed, friends list, and new tweeds
@@ -178,5 +216,9 @@ window.isItBeautifulYet = true;
 Scroll back to top button: https://getflywheel.com/layout/sticky-back-to-top-button-tutorial/
 JQuery textarea with character counter: http://geoffmuskett.com/really-simple-jquery-character-countdown-in-textarea/
 CSS background gradient animator: https://www.gradient-animator.com/
+Auto-resize textarea: https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize / http://jsfiddle.net/n9uuv0hd/54/
+Transforming hamburger menu icon: https://www.w3schools.com/howto/howto_css_menu_icon.asp
+Fill color left to right in CSS: https://stackoverflow.com/questions/17212094/fill-background-color-left-to-right-css
 
 */
+
