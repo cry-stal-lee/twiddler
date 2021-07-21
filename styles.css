@@ -100,7 +100,7 @@ a:hover {
 }
 
 .icon:hover {
-  color: #303761;
+  opacity: 0.2;
   transition: 0.2s;
 }
 
@@ -183,8 +183,13 @@ a:hover {
   transition: 0.4s;
 }
 
-.dark-blue-bg {
-  background: #303761;
+.line-before {
+  width: 16.5px;
+  transition: all .2s linear;
+}
+
+.line-right-before {
+  float: right;
 }
 
 .change .line-left {
@@ -199,11 +204,6 @@ a:hover {
   transform: rotate(45deg) translate(-6px, -6px);
 }
 
-/*
-.change {
-  color: pink;
-} */
-
 /* .line-left, .line-right {
   width: 16.5px;
   transition: all .2s linear;
@@ -212,6 +212,10 @@ a:hover {
 .line-right {
   float: right;
 } */
+
+.dark-blue-bg {
+  background: #303761;
+}
 
 .scrollToTop {
   transition: all .25s ease-in-out;
@@ -383,9 +387,7 @@ textarea:focus, input:focus{
 }
 
 .tweet:hover {
-  /* background: rgba(74, 104, 143, 0.4); */
-  background: rgba(26, 28, 31, 0.8);
-  /* background: rgba(153, 151, 119, 0.1); */
+  background: rgba(15, 24, 34, 0.6);
   transition: 0.3s;
 }
 
@@ -439,6 +441,7 @@ textarea:focus, input:focus{
 .username:hover {
   cursor: pointer;
   color: #303761;
+  animation: quickBlur 0.25s ease;
 }
 
 p {

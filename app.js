@@ -7,9 +7,9 @@ $(document).ready(function(){
 
   var $newTweedFormContainer = $('<div id="new-tweed-form-container"></div>');
   var $newTweedForm = $('<form id="new-tweed-form"></form>');
-  $newTweedForm.append('<label for="username">Hello <strong>@</strong></label><input type="text" class="hoverable" id="username" name="username" placeholder="[your handle]" maxlength="25"></input>, ');
+  $newTweedForm.append('<label for="username">Hello <strong>@</strong></label><input type="text" class="" id="username" name="username" placeholder="[your handle]" maxlength="25"></input>, ');
   $newTweedForm.append('<label for="message">what\'s on your mind?</label>')
-  $newTweedForm.append('<textarea class="hoverable" name="message" id="message" maxlength="300" placeholder="[your thoughts here]"></textarea>');
+  $newTweedForm.append('<textarea class="" name="message" id="message" maxlength="300" placeholder="[your thoughts here]"></textarea>');
   $newTweedFormContainer.append($newTweedForm);
 
   var $tweedItContainer = $('<div id="tweed-it-container"></div>')
@@ -32,22 +32,10 @@ $(document).ready(function(){
   var $menu = $('<div class="menu"></div>');
   var $friendsList = $('<ul id="friends-list" class="friends-list">Friends List</ul>');
   var $menuButton = $('<button class="menu-button hoverable"></button>');
-  $menuButton.append('<span class="line line-left"></span><span class="line line-middle"></span><span class="line line-right"></span>');
+  $menuButton.append('<span class="line line-left line-before"></span><span class="line line-middle"></span><span class="line line-right line-before line-right-before"></span>');
   $menu.append($friendsList);
 
   var cursor = $('.cursor');
-
-  // Append new HTML elements to the DOM
-  $title.appendTo($app);
-  $newTweedFormContainer.appendTo($app);
-  $tweedItContainer.appendTo($app);
-  $newTweedsContainer.appendTo($app);
-  $feed.appendTo($app);
-  $menuButton.appendTo($app);
-  $menu.appendTo($app);
-  $credit.appendTo($creditWrapper)
-  $creditWrapper.appendTo($app);
-  $scrollToTop.appendTo($app);
 
   // Create event handler functions
   var renderFeed = function(user) {
@@ -91,7 +79,7 @@ $(document).ready(function(){
     $friendsList.html('');
     let sortedUsers = Object.keys(streams.users).sort();
     sortedUsers.forEach(function(user) {
-      var $friend = $('<li class="friend hoverable"></li>').text('@' + user).on("click", function() {
+      var $friend = $('<li class="friend"></li>').text('@' + user).on("click", function() {
         handleUsernameClick(user);
       });
       $friend.appendTo($friendsList);
@@ -109,8 +97,11 @@ $(document).ready(function(){
   var renderTweet = function(tweet) {
     var $tweet = $('<div class="tweet"></div>');
     var $profilePhoto = $('<img class="profile-photo"></img>').attr('src', tweet.profilePhotoURL);
-    var $user = $('<span class="username hoverable"></span>').text('@' + tweet.user).on("click", function() {
-      handleUsernameClick(tweet.user)});
+    var $user = $('<span class="username hoverable"></span>').text('@' + tweet.user).on({
+      click: function() {
+        handleUsernameClick(tweet.user)
+      }
+    });
     var $message = $('<p class="message"></p>').text(tweet.message);
     var $timestamp = $('<span class="timestamp"></span>').html(' &bull; ' + jQuery.timeago(tweet.created_at));
 
@@ -150,6 +141,30 @@ $(document).ready(function(){
       window.scrollTo(0, c - c / 10);
     }
   };
+
+  var magnifyCursor = (function(e) {
+    cursor.css('transform', 'scale(1.8)');
+    cursor.css('background-color', '#ac9a6f');
+    cursor.css('box-shadow', '0 0 5px 0 rgb(172 154 111 / 0.5)');
+  });
+
+  var restoreCursor = (function(e) {
+    cursor.css('transform', 'scale(1)');
+    cursor.css('background-color', 'transparent');
+    cursor.css('box-shadow', '0 0 20px 0 rgb(172 154 111 / 0.5)');
+  });
+
+    // Append new HTML elements to the DOM
+    $title.appendTo($app);
+    $newTweedFormContainer.appendTo($app);
+    $tweedItContainer.appendTo($app);
+    $newTweedsContainer.appendTo($app);
+    $feed.appendTo($app);
+    $menuButton.appendTo($app);
+    $menu.appendTo($app);
+    $credit.appendTo($creditWrapper)
+    $creditWrapper.appendTo($app);
+    $scrollToTop.appendTo($app);
 
   // Set event listeners (providing appropriate handlers as input)
   $title.on("click", function() {
@@ -206,7 +221,24 @@ $(document).ready(function(){
       opacity: "toggle"
     }, "slow");
     $('.line').toggleClass("dark-blue-bg");
+    $('.line').toggleClass("line-before", "line-right-before");
+    $('.line-left').toggleClass("line-before");
+    $('.line-right').toggleClass("line-before", "line-right-before");
   });
+
+  $('.menu-button').on("mouseenter", function(x) {
+    if (!$(this).hasClass("change")) {
+      $('.line-left').removeClass("line-before");
+      $('.line-right').removeClass("line-before", "line-right-before");
+    }
+  })
+
+  $('.menu-button').on("mouseleave", function(x) {
+    if (!$(this).hasClass("change")) {
+    $('.line-left').addClass("line-before");
+    $('.line-right').addClass("line-before", "line-right-before");
+    }
+  })
 
   $(window).mousemove(function(e) {
       cursor.css({
@@ -227,19 +259,16 @@ $(document).ready(function(){
           });
       });
 
+  $('.hoverable').on({
+    mouseenter: magnifyCursor,
+    mouseleave: restoreCursor
+  });
 
+  $("ul").on("mouseenter", "li", magnifyCursor);
+  $("ul").on("mouseleave", "li", restoreCursor);
 
-  $('.hoverable').on("mouseenter", (function(e) {
-    cursor.css('transform', 'scale(1.8)');
-    cursor.css('background-color', '#ac9a6f');
-    cursor.css('box-shadow', '0 0 5px 0 rgb(172 154 111 / 0.5)');
-  }));
-
-  $('.hoverable').on("mouseleave", (function(e) {
-    cursor.css('transform', 'scale(1)');
-    cursor.css('background-color', 'transparent');
-    cursor.css('box-shadow', '0 0 20px 0 rgb(172 154 111 / 0.5)');
-  }));
+  $feed.on("mouseenter", ".username", magnifyCursor);
+  $feed.on("mouseleave", ".username", restoreCursor);
 
   // Autoexpand and shrink text area
   $("textarea").each(function () {
@@ -266,6 +295,8 @@ Transforming hamburger menu icon: https://www.w3schools.com/howto/howto_css_menu
 Fill color left to right in CSS: https://stackoverflow.com/questions/17212094/fill-background-color-left-to-right-css
 JQuery slidetoggle + fade effect: https://stackoverflow.com/questions/7672556/how-to-add-an-opacity-fading-effect-to-to-the-jquery-slidetoggle
 JQuery circle cursor w/ blend mode: https://dev.to/b4two/how-to-make-a-custom-cursor-with-css-and-jquery-5g3m
-
+JQuery click events for dynamically added elements: https://www.learningjquery.com/2017/02/jquery-on-method-the-issue-of-dynamically-added-elements
+JQuery binding multiple events: https://stackoverflow.com/questions/8608145/jquery-on-method-with-multiple-event-handlers-to-one-selector
+JQuery delegation dynamic parent debugging: https://stackoverflow.com/questions/14164296/why-is-jquery-event-delegation-not-working
 */
 
