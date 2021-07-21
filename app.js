@@ -25,6 +25,7 @@ $(document).ready(function(){
 
   var $creditWrapper = $('<div id="credit-wrapper"></div>')
   var $credit = $('<a id="credit" class="hoverable" href="https://github.com/cry-stal-lee"><h2>crystal lee</h2></a>');
+  $credit.appendTo($creditWrapper)
 
   var $scrollToTop = $('<a class="scrollToTop hide hoverable" href=""></a>');
   $scrollToTop.html('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6"><path d="M12 6H0l6-6z"/></svg>');
@@ -154,17 +155,9 @@ $(document).ready(function(){
     cursor.css('box-shadow', '0 0 20px 0 rgb(172 154 111 / 0.5)');
   });
 
-    // Append new HTML elements to the DOM
-    $title.appendTo($app);
-    $newTweedFormContainer.appendTo($app);
-    $tweedItContainer.appendTo($app);
-    $newTweedsContainer.appendTo($app);
-    $feed.appendTo($app);
-    $menuButton.appendTo($app);
-    $menu.appendTo($app);
-    $credit.appendTo($creditWrapper)
-    $creditWrapper.appendTo($app);
-    $scrollToTop.appendTo($app);
+  // Append new HTML elements to the DOM
+  $app.append($title, $newTweedFormContainer, $tweedItContainer, $newTweedsContainer,
+      $feed, $menuButton, $menu, $creditWrapper, $scrollToTop);
 
   // Set event listeners (providing appropriate handlers as input)
   $title.on("click", function() {
@@ -222,56 +215,59 @@ $(document).ready(function(){
       opacity: "toggle"
     }, "slow");
     $('.line').toggleClass("dark-blue-bg");
-    $('.line').toggleClass("line-before", "line-right-before");
+    $('.line').toggleClass("line-before");
     $('.line-left').toggleClass("line-before");
-    $('.line-right').toggleClass("line-before", "line-right-before");
+    $('.line-right').toggleClass("line-before");
   });
 
   $('.menu-button').on("mouseenter", function(x) {
     if (!$(this).hasClass("change")) {
       $('.line-left').removeClass("line-before");
-      $('.line-right').removeClass("line-before", "line-right-before");
+      $('.line-right').removeClass("line-before");
     }
   })
 
   $('.menu-button').on("mouseleave", function(x) {
     if (!$(this).hasClass("change")) {
     $('.line-left').addClass("line-before");
-    $('.line-right').addClass("line-before", "line-right-before");
+    $('.line-right').addClass("line-before");
     }
   })
 
-  $(window).mousemove(function(e) {
+  $(window).on ({
+    mousemove: function(e) {
       cursor.css({
           top: e.clientY - cursor.height() / 2,
           left: e.clientX - cursor.width() / 2
       });
-  });
-
-  $(window)
-      .mouseleave(function() {
-          cursor.css({
-              opacity: "0"
-          });
-      })
-      .mouseenter(function() {
-          cursor.css({
-              opacity: "1"
-          });
+    },
+    mouseleave: function() {
+      cursor.css({
+          opacity: "0"
       });
+    },
+    mouseenter: function() {
+      cursor.css({
+          opacity: "1"
+      });
+    }
+  });
 
   $('.hoverable').on({
     mouseenter: magnifyCursor,
     mouseleave: restoreCursor
   });
 
-  $("ul").on("mouseenter", "li", magnifyCursor);
-  $("ul").on("mouseleave", "li", restoreCursor);
+  $("ul").on({
+    mouseenter: magnifyCursor,
+    mouseleave: restoreCursor
+  }, "li");
 
-  $feed.on("mouseenter", ".username", magnifyCursor);
-  $feed.on("mouseleave", ".username", restoreCursor);
+  $feed.on({
+    mouseenter: magnifyCursor,
+    mouseleave: restoreCursor
+  }, ".username");
 
-  // Autoexpand and shrink text area
   $("textarea").each(function () {
     this.setAttribute("style", "height:" + (this.scrollHeight) + "px; overflow-y:hidden;");
   }).on("input", function () {

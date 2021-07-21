@@ -9,7 +9,6 @@ html, body, #app {
 
 /* Continue building out the CSS styling for your Twiddler app below! We got you started by
 providing a space for you to apply styles to your app's outermost HTML element - the #app itself. */
-
 body {
   background: linear-gradient(177deg, #3f525e, #1c2733, #324453, #2b3049);
   background-size: 600% 600%;
@@ -32,28 +31,14 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
-.profile-photo {
-  border-radius: 50%;
-
-  border: #a9c0cf solid 1px;
-
-  height: 80px;
-  width: 80px;
-  display: flex;
-  grid-column: 1;
-  grid-row: 1 / 3;
-  justify-self: center;
-
-  box-shadow: 0 0 10px 0 rgba(125, 143, 170, 0.3);
+.show {
+  visibility: visible;
+  opacity: 1;
 }
 
-.tweet-content {
-  grid-column: 2;
-  grid-row: 1;
-}
-
-button {
-  height: 50px;
+.hide {
+  visibility: hidden;
+  opacity: 0;
 }
 
 header {
@@ -97,11 +82,6 @@ h1:hover, h2:hover {
   color: #7c8ab9;
 }
 
-.icon:hover {
-  opacity: 0.2;
-  transition: 0.2s;
-}
-
 #new-tweed-form-container {
   grid-column: 2;
   display: flex;
@@ -113,12 +93,79 @@ h1:hover, h2:hover {
   width: 100%;
 }
 
+::placeholder {
+  color: #72858f;
+}
+
+.message {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+}
+
+textarea {
+  font-family: inherit;
+  color: inherit;
+  resize: none;
+  box-sizing: border-box;
+  width: 100%;
+  background: rgba(34,46,62,.4);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
+  border: 2px solid #a9b3c9;
+  border-radius: 10px;
+  font-size: inherit;
+  padding: 10px;
+  overflow-y: hidden;
+}
+
+textarea:focus, input:focus{
+  outline: none;
+}
+
+#remaining, #tweed-it {
+  font-family: inherit;
+  color: inherit;
+  font-size: 0.75rem;
+}
+
+#remaining {
+  font-style: italic;
+  color: #72858f;
+}
+
 #tweed-it-container {
   grid-column: 2;
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin: 2px 0;
+}
+
+button {
+  height: 50px;
+}
+
+#tweed-it {
+  background-color: #a9c0cf;
+  color: #5b6b9e;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  height: 30px;
+}
+
+#tweed-it:disabled, #update-feed:disabled {
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+#tweed-it:hover, #update-feed:hover {
+  background-color: #303761;
+  color: #7c8ab9;
+  transition: 0.3s;
+  cursor: pointer;
 }
 
 #new-tweeds-container {
@@ -134,23 +181,111 @@ h1:hover, h2:hover {
   color: #72858f;
 }
 
+#update-feed {
+  font-size: 1rem;
+  font-family: inherit;
+  color: inherit;
+  max-width: 200px;
+  background-color: #a9c0cf;
+  color: #5b6b9e;
+  border: none;
+  border-radius: 5px;
+  max-height: 2.5rem;
+  padding: 0 30px;
+}
+
 #feed {
   grid-column: 2;
 }
 
-.friends-list {
-  text-align: left;
-  transition: all .3s ease;
-  background-color: #7c8ab9;
+.tweet {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: auto 1fr auto;
+  font-family: inherit;
+  gap: 10px;
+  color: inherit;
+  resize: none;
+  box-sizing: border-box;
+  width: 100%;
+  background: rgba(34,46,62,.4);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
-  border: 0px;
+  border: 2px solid #a9b3c9;
   border-radius: 10px;
-  padding: 60px 0 20px 0;
-  max-height: 80vh;
-  overflow-y: scroll;
-  overflow-x: scroll;
+  font-size: inherit;
+  min-height: 80px;
+  overflow-y: hidden;
+  padding: 20px 10px;
+  margin: 20px 0;
+}
+
+.tweet:hover {
+  background: rgba(15, 24, 34, 0.6);
+  transition: 0.3s;
+}
+
+.username {
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.username:hover {
+  cursor: pointer;
+  color: #303761;
+  animation: quickBlur 0.25s ease;
+}
+
+.icon-container {
+  display: flex;
+  grid-column: 2;
+  grid-row: 3;
+  justify-content: space-between;
+}
+
+.profile-photo {
+  border-radius: 50%;
+  border: #a9c0cf solid 1px;
+  height: 80px;
+  width: 80px;
+  display: flex;
+  grid-column: 1;
+  grid-row: 1 / 3;
+  justify-self: center;
+  box-shadow: 0 0 10px 0 rgba(125, 143, 170, 0.3);
+}
+
+.icon:hover {
+  opacity: 0.2;
+  transition: 0.2s;
+}
+
+#username {
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  background: rgba(34,46,62,.4);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
+  border: 2px solid #a9b3c9;
+  border-radius: 10px;
+  font-size: 1rem;
+  padding: 5px 10px;
+  margin: 5px;
+  max-height: 2rem;
+  max-width: 150px;
+}
+
+.user-time {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.timestamp {
+  display: inline;
+  color: #72858f;
 }
 
 .menu-button {
@@ -206,195 +341,26 @@ h1:hover, h2:hover {
   background: #303761;
 }
 
-.scrollToTop {
-  transition: all .25s ease-in-out;
+.menu {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  display: inline-flex;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  margin: 0 3em 3em 0;
-  border-radius: 50%;
-  padding: .25em;
-  width: 80px;
-  height: 80px;
-  background-color: #a9c0cf;
+  top: 1.5em;
+  left: 2em;
+  display: none;
 }
 
-.show {
-  visibility: visible;
-  opacity: 1;
-}
-
-.hide {
-  visibility: hidden;
-  opacity: 0;
-}
-
-.scrollToTop > svg {
-  fill: #7c8ab9;
-  width: 24px;
-  height: 12px;
-}
-
-.scrollToTop:hover {
-  background-color: #303761;
-}
-
-#username {
-  font-family: inherit;
-  color: inherit;
-  box-sizing: border-box;
-  background: rgba(34,46,62,.4);
+.friends-list {
+  text-align: left;
+  transition: all .3s ease;
+  background-color: #7c8ab9;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
-  border: 2px solid #a9b3c9;
+  border: 0px;
   border-radius: 10px;
-  font-size: 1rem;
-  padding: 5px 10px;
-  margin: 5px;
-  max-height: 2rem;
-  max-width: 150px;
-}
-
-.user-time {
-  grid-column: 2;
-  grid-row: 1;
-}
-
-.timestamp {
-  display: inline;
-  color: #72858f;
-}
-
-::placeholder {
-  color: #72858f;
-}
-
-.message {
-  grid-column: 2;
-  grid-row: 2;
-}
-
-.icon-container {
-  display: flex;
-  grid-column: 2;
-  grid-row: 3;
-  justify-content: space-between;
-}
-
-textarea {
-  font-family: inherit;
-  color: inherit;
-  resize: none;
-  box-sizing: border-box;
-  width: 100%;
-  background: rgba(34,46,62,.4);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
-  border: 2px solid #a9b3c9;
-  border-radius: 10px;
-  font-size: inherit;
-  padding: 10px;
-  overflow-y: hidden;
-}
-
-textarea:focus, input:focus{
-  outline: none;
-}
-
-#remaining, #tweed-it {
-  font-family: inherit;
-  color: inherit;
-  font-size: 0.75rem;
-}
-
-#remaining {
-  font-style: italic;
-  color: #72858f;
-}
-
-#update-feed {
-  font-size: 1rem;
-  font-family: inherit;
-  color: inherit;
-  max-width: 200px;
-  background-color: #a9c0cf;
-  color: #5b6b9e;
-  border: none;
-  /* border: 2px solid #7c8ab9; */
-  border-radius: 5px;
-  max-height: 2.5rem;
-  padding: 0 30px;
-}
-
-#tweed-it {
-  background-color: #a9c0cf;
-  color: #5b6b9e;
-  border: none;
-  /* border: 2px solid #7c8ab9; */
-  border-radius: 5px;
-  padding: 5px 10px;
-  height: 30px;
-}
-
-#tweed-it:disabled, #update-feed:disabled {
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-#tweed-it:hover, #update-feed:hover {
-  background-color: #303761;
-  color: #7c8ab9;
-  transition: 0.3s;
-  cursor: pointer;
-}
-
-.tweet {
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  grid-template-rows: auto 1fr auto;
-  font-family: inherit;
-  gap: 10px;
-  color: inherit;
-  resize: none;
-  box-sizing: border-box;
-  width: 100%;
-  background: rgba(34,46,62,.4);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  box-shadow: 15px 15px 50px rgb(34 46 62 / 50%);
-  border: 2px solid #a9b3c9;
-  border-radius: 10px;
-  font-size: inherit;
-  min-height: 80px;
-  overflow-y: hidden;
-  padding: 20px 10px;
-  margin: 20px 0;
-}
-
-.tweet:hover {
-  background: rgba(15, 24, 34, 0.6);
-  transition: 0.3s;
-}
-
-.username {
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.username:hover {
-  cursor: pointer;
-  color: #303761;
-  animation: quickBlur 0.25s ease;
-}
-
-p {
-  margin: 0;
+  padding: 60px 0 20px 0;
+  max-height: 80vh;
+  overflow-y: scroll;
+  overflow-x: scroll;
 }
 
 li {
@@ -416,11 +382,31 @@ li:hover {
   cursor: pointer;
 }
 
-.menu {
+.scrollToTop {
+  transition: all .25s ease-in-out;
   position: fixed;
-  top: 1.5em;
-  left: 2em;
-  display: none;
+  bottom: 0;
+  right: 0;
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  margin: 0 3em 3em 0;
+  border-radius: 50%;
+  padding: .25em;
+  width: 80px;
+  height: 80px;
+  background-color: #a9c0cf;
+}
+
+.scrollToTop > svg {
+  fill: #7c8ab9;
+  width: 24px;
+  height: 12px;
+}
+
+.scrollToTop:hover {
+  background-color: #303761;
 }
 
 .cursor {
@@ -436,6 +422,8 @@ li:hover {
   box-shadow: 0 0 20px 0 rgb(172 154 111 / 0.5);
   transition: transform 0.2s;
 }
+
+/* Animation declarations */
 
 @keyframes blurAnimation {
   /* Animation happens between 0% and 20% */
