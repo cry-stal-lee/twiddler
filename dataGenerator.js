@@ -12,6 +12,11 @@ streams.users.sharksforcheap = [];
 streams.users.mracus = [];
 streams.users.douglascalhoun = [];
 streams.users.hectorpina = [];
+
+streams.users.oliviarodrigo = [];
+streams.users.takahiro = [];
+streams.users.wishfulthinking = [];
+
 window.users = Object.keys(streams.users);
 var newTweeds = 0;
 
