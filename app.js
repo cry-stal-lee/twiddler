@@ -3,37 +3,39 @@ $(document).ready(function(){
 
   // Create new HTML elements
   var $app = $('#app');
-  var $title = $('<header><h1>twiddler</h1></header>');
+  var $title = $('<header><h1 class="hoverable">twiddler</h1></header>');
 
   var $newTweedFormContainer = $('<div id="new-tweed-form-container"></div>');
   var $newTweedForm = $('<form id="new-tweed-form"></form>');
-  $newTweedForm.append('<label for="username">Hello <strong>@</strong></label><input type="text" id="username" name="username" placeholder="[your handle]" maxlength="25"></input>, ');
+  $newTweedForm.append('<label for="username">Hello <strong>@</strong></label><input type="text" class="hoverable" id="username" name="username" placeholder="[your handle]" maxlength="25"></input>, ');
   $newTweedForm.append('<label for="message">what\'s on your mind?</label>')
-  $newTweedForm.append('<textarea name="message" id="message" maxlength="300" placeholder="[your thoughts here]"></textarea>');
+  $newTweedForm.append('<textarea class="hoverable" name="message" id="message" maxlength="300" placeholder="[your thoughts here]"></textarea>');
   $newTweedFormContainer.append($newTweedForm);
 
   var $tweedItContainer = $('<div id="tweed-it-container"></div>')
-  var $tweedIt = $('<input type="submit" form="new-tweed-form" value="tweed it &#8594" id="tweed-it" disabled="true"></input>');
+  var $tweedIt = $('<input type="submit" class="hoverable" form="new-tweed-form" value="tweed it &#8594" id="tweed-it" disabled="true"></input>');
   $tweedItContainer.append($tweedIt, '<span id="remaining"><span id="remainingChars">300</span> chars remaining</span>');
 
   var $newTweedsContainer = $('<div id="new-tweeds-container"></div>');
   var $newTweeds = $('<span id="new-tweeds"></span>').text('0 new tweeds');
-  var $updateFeed = $('<button id="update-feed">&#8635 update feed</button>');
+  var $updateFeed = $('<button id="update-feed" class="hoverable">&#8635 update feed</button>');
   $newTweedsContainer.append($newTweeds, $updateFeed);
 
   var $feed = $('<div id="feed"></div>');
 
   var $creditWrapper = $('<div id="credit-wrapper"></div>')
-  var $credit = $('<a id="credit" href="https://github.com/cry-stal-lee"><h2>crystal lee</h2></a>');
+  var $credit = $('<a id="credit" class="hoverable" href="https://github.com/cry-stal-lee"><h2>crystal lee</h2></a>');
 
-  var $scrollToTop = $('<a class="scrollToTop hide" href=""></a>');
+  var $scrollToTop = $('<a class="scrollToTop hide hoverable" href=""></a>');
   $scrollToTop.html('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6"><path d="M12 6H0l6-6z"/></svg>');
 
   var $menu = $('<div class="menu"></div>');
-  var $friendsList = $('<ul class="friends-list">Friends List</ul>');
-  var $menuButton = $('<button class="menu-button"></button>');
+  var $friendsList = $('<ul id="friends-list" class="friends-list">Friends List</ul>');
+  var $menuButton = $('<button class="menu-button hoverable"></button>');
   $menuButton.append('<span class="line line-left"></span><span class="line line-middle"></span><span class="line line-right"></span>');
   $menu.append($friendsList);
+
+  var cursor = $('.cursor');
 
   // Append new HTML elements to the DOM
   $title.appendTo($app);
@@ -89,7 +91,7 @@ $(document).ready(function(){
     $friendsList.html('');
     let sortedUsers = Object.keys(streams.users).sort();
     sortedUsers.forEach(function(user) {
-      var $friend = $('<li class="friend"></li>').text('@' + user).on("click", function() {
+      var $friend = $('<li class="friend hoverable"></li>').text('@' + user).on("click", function() {
         handleUsernameClick(user);
       });
       $friend.appendTo($friendsList);
@@ -107,7 +109,7 @@ $(document).ready(function(){
   var renderTweet = function(tweet) {
     var $tweet = $('<div class="tweet"></div>');
     var $profilePhoto = $('<img class="profile-photo"></img>').attr('src', tweet.profilePhotoURL);
-    var $user = $('<span class="username"></span>').text('@' + tweet.user).on("click", function() {
+    var $user = $('<span class="username hoverable"></span>').text('@' + tweet.user).on("click", function() {
       handleUsernameClick(tweet.user)});
     var $message = $('<p class="message"></p>').text(tweet.message);
     var $timestamp = $('<span class="timestamp"></span>').html(' &bull; ' + jQuery.timeago(tweet.created_at));
@@ -203,7 +205,41 @@ $(document).ready(function(){
       height: "toggle",
       opacity: "toggle"
     }, "slow");
+    $('.line').toggleClass("dark-blue-bg");
   });
+
+  $(window).mousemove(function(e) {
+      cursor.css({
+          top: e.clientY - cursor.height() / 2,
+          left: e.clientX - cursor.width() / 2
+      });
+  });
+
+  $(window)
+      .mouseleave(function() {
+          cursor.css({
+              opacity: "0"
+          });
+      })
+      .mouseenter(function() {
+          cursor.css({
+              opacity: "1"
+          });
+      });
+
+
+
+  $('.hoverable').on("mouseenter", (function(e) {
+    cursor.css('transform', 'scale(1.8)');
+    cursor.css('background-color', '#ac9a6f');
+    cursor.css('box-shadow', '0 0 5px 0 rgb(172 154 111 / 0.5)');
+  }));
+
+  $('.hoverable').on("mouseleave", (function(e) {
+    cursor.css('transform', 'scale(1)');
+    cursor.css('background-color', 'transparent');
+    cursor.css('box-shadow', '0 0 20px 0 rgb(172 154 111 / 0.5)');
+  }));
 
   // Autoexpand and shrink text area
   $("textarea").each(function () {
@@ -229,6 +265,7 @@ Auto-resize textarea: https://stackoverflow.com/questions/454202/creating-a-text
 Transforming hamburger menu icon: https://www.w3schools.com/howto/howto_css_menu_icon.asp
 Fill color left to right in CSS: https://stackoverflow.com/questions/17212094/fill-background-color-left-to-right-css
 JQuery slidetoggle + fade effect: https://stackoverflow.com/questions/7672556/how-to-add-an-opacity-fading-effect-to-to-the-jquery-slidetoggle
+JQuery circle cursor w/ blend mode: https://dev.to/b4two/how-to-make-a-custom-cursor-with-css-and-jquery-5g3m
 
 */
 
