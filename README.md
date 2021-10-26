@@ -6,9 +6,14 @@
 Watch the [demo](https://youtu.be/a8u06w6hfiM), or view [live](http://www.crystallee.dev).
 
 ## Features
+### New Tweeds
 - Post new tweeds under any username
+
+### Refreshable Feed
 - Refresh feed by clicking update feed button
 - Visible new tweed count with live updates
+
+### Users & Friends
 - New usernames are added to friends list
 - Friends list is expandeable and hideable
 - Clicking usernames filters feed for that particular user's tweeds
