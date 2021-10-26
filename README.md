@@ -13,6 +13,12 @@ Watch the [demo](https://youtu.be/a8u06w6hfiM), or view [live](http://www.crysta
 - Friends list is expandeable and hideable
 - Clicking usernames filters feed for that particular user's tweeds
 
+## Usage
+```
+git clone https://github.com/cry-stal-lee/twiddler.git
+open index.html in your browser
+```
+
 ## Technologies
 - HTML/CSS3/JS
 - jQuery
