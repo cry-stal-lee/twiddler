@@ -15,8 +15,7 @@ Watch the [demo](https://youtu.be/a8u06w6hfiM), or view [live](http://www.crysta
 
 ## Usage
 ```
-$ git clone https://github.com/cry-stal-lee/twiddler.git
-$ open index.html
+open index.html
 ```
 
 ## Technologies
